@@ -1,0 +1,16 @@
+{
+  "name": "c3t-pad",
+  "version": "0.1.0",
+  "description": "Convert Chaos Communication Congress schedule into pads for the translation team",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Philipp Bock <p@philippbock.de> (http://philippbock.de/)",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "lodash": "^4.16.6",
+    "stream-to-promise": "^2.2.0"
+  }
+}
