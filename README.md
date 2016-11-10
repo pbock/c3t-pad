@@ -9,7 +9,7 @@ First, clone this repository and run `yarn install` (or `npm install`).
 Then:
 
 ```sh
-$ node index.js < curl https://events.ccc.de/congress/2015/Fahrplan/schedule.xml
+$ curl https://events.ccc.de/congress/2015/Fahrplan/schedule.xml | node index.js
 ```
 
 Of course, the XML doesn't have to come from curl; you can just as well pipe in a local file.
