@@ -25,6 +25,12 @@ streamToPromise(process.stdin)
 		// Initialise the template
 		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ], title, version, acronym });
 
+		try {
+			fs.mkdirSync('output');
+		} catch (e) {
+			if (e.code !== 'EEXIST') throw e;
+		}
+
 		days.forEach((day) => {
 			// Events are grouped by language and sorted by time first, room second
 			const eventsByLanguage = _(day.events)
@@ -35,7 +41,7 @@ streamToPromise(process.stdin)
 				.sortBy('language')
 				.value()
 
-			fs.writeFileSync(`day${day.index}.html`, dayTemplate(eventsByLanguage));
+			fs.writeFileSync(`output/day${day.index}.html`, dayTemplate(eventsByLanguage));
 		})
 
 	})
