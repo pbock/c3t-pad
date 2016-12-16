@@ -24,5 +24,9 @@
   ],
   "bin": {
     "c3t-pad": "./index.js"
-  }
+  },
+	"repository": "pbock/c3t-pad",
+	"bugs": {
+		"url": "https://github.com/pbock/c3t-pad/issues"
+	}
 }
