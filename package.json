@@ -12,5 +12,9 @@
     "cheerio": "^0.22.0",
     "lodash": "^4.16.6",
     "stream-to-promise": "^2.2.0"
-  }
+  },
+	"keywords": [ "translations", "ccc", "33c3", "schedule", "congress", "etherpad" ],
+	"bin": {
+		"c3t-pad": "./index.js"
+	}
 }

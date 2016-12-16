@@ -2,19 +2,25 @@
 
 A tool that takes a Chaos Communication Congress schedule in XML format and spits it out in a format that's ready to be pasted into EtherPad.
 
+The translation angels use these to coordinate their translation shifts.
+
 ## Usage
 
-First, clone this repository and run `yarn install` (or `npm install`).
-
-Then:
+If you haven't already, install node.js. `v7.0.0` _works for me_, but in practice anything from `v4.0.0` should be fine. Then install this tool:
 
 ```sh
-$ curl https://events.ccc.de/congress/2015/Fahrplan/schedule.xml | node index.js
+$ npm install -g c3t-pad
+```
+
+Once installed, you can get the most recent schedule and turn it into Etherpad files:
+
+```sh
+$ curl https://events.ccc.de/congress/2016/Fahrplan/schedule.xml | c3t-pad
 ```
 
 Of course, the XML doesn't have to come from curl; you can just as well pipe in a local file.
 
-This will spit out sequentially numbered files in your current working directory; one for each day of the conference (`day1.html`, `day2.html`, …).
+This will spit out sequentially numbered files into an `output/` directory in your current working directory; one for each day of the conference (`day1.html`, `day2.html`, …).
 
 Open each of them in a web browser, copy everything and paste it into an appropriate EtherPad.
 
