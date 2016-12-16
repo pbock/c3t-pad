@@ -57,16 +57,21 @@ streamToPromise(process.stdin)
 
 		days.forEach((day) => {
 			// Events are grouped by language and sorted by time first, room second
-			const eventsByLanguage = _(day.events)
+			const eventsByTime = _(day.events)
 				.sortBy('room')
 				.sortBy('date')
+				.value()
+
+			eventsByTime.forEach((event, i) => { event.sequentialNumber = i + 1 })
+
+			const eventsByLanguage = _(eventsByTime)
 				.groupBy('language')
 				.map((events, language) => ({ events, language }))
 				.sortBy('language')
 				.value()
 
 			const outputPath = path.join(program.outputDir, `day${day.index}.html`);
-			fs.writeFileSync(outputPath, dayTemplate(eventsByLanguage));
+			fs.writeFileSync(outputPath, dayTemplate({ eventsByTime, eventsByLanguage }));
 		})
 
 	})
