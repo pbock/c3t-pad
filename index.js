@@ -1,6 +1,7 @@
 'use strict';
 
 const streamToPromise = require('stream-to-promise');
+const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 
@@ -8,6 +9,28 @@ const _ = require('lodash');
 const parse = require('./lib/parse');
 // Takes a list of events grouped by language and turns it into awful HTML
 const Template = require('./lib/template');
+
+const program = require('commander');
+
+function logExamples() {
+	console.log('  Examples:');
+	console.log('');
+	console.log('     $ curl https://events.ccc.de/congress/2016/Fahrplan/schedule.xml | c3t-pad');
+	console.log('     $ c3t-pad -o myoutdir/ < schedule.xml');
+	console.log('');
+}
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json')));
+program.version(packageJson.version)
+	.description(`Turns conference schedule XML into HTML for translation angels' Etherpads`)
+	.option('-o, --output-dir <dir>', 'Specify a different output directory', 'output/')
+	.on('--help', logExamples)
+	.parse(process.argv);
+
+if (process.stdin.isTTY) {
+	console.error(`Please pipe a congress schedule XML into c3t-pad.\n`);
+	logExamples();
+	process.exit(1);
+}
 
 streamToPromise(process.stdin)
 	.then(parse)
@@ -26,7 +49,7 @@ streamToPromise(process.stdin)
 		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ], title, version, acronym });
 
 		try {
-			fs.mkdirSync('output');
+			fs.mkdirSync(program.outputDir);
 		} catch (e) {
 			if (e.code !== 'EEXIST') throw e;
 		}
@@ -41,7 +64,8 @@ streamToPromise(process.stdin)
 				.sortBy('language')
 				.value()
 
-			fs.writeFileSync(`output/day${day.index}.html`, dayTemplate(eventsByLanguage));
+			const outputPath = path.join(program.outputDir, `day${day.index}.html`);
+			fs.writeFileSync(outputPath, dayTemplate(eventsByLanguage));
 		})
 
 	})
