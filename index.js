@@ -11,7 +11,7 @@ const Template = require('./lib/template');
 
 streamToPromise(process.stdin)
 	.then(parse)
-	.then((days) => {
+	.then(({ title, version, days, acronym }) => {
 		// Find the most common event type.
 		// It will get ignored in the template (this is useful because
 		// nearly all events at CCC are set to "lecture").
@@ -23,7 +23,7 @@ streamToPromise(process.stdin)
 			.maxBy(1)[0];
 
 		// Initialise the template
-		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ] });
+		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ], title, version, acronym });
 
 		days.forEach((day) => {
 			// Events are grouped by language and sorted by time first, room second
