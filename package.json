@@ -1,6 +1,6 @@
 {
   "name": "c3t-pad",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convert Chaos Communication Congress schedule into pads for the translation team",
   "main": "index.js",
   "scripts": {
