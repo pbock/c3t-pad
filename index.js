@@ -16,7 +16,7 @@ const program = require('commander');
 function logExamples() {
 	console.log('  Examples:');
 	console.log('');
-	console.log('     $ curl https://events.ccc.de/congress/2016/Fahrplan/schedule.xml | c3t-pad');
+	console.log('     $ curl https://events.ccc.de/congress/2017/Fahrplan/schedule.xml | c3t-pad');
 	console.log('     $ c3t-pad -o myoutdir/ < schedule.xml');
 	console.log('');
 }
@@ -35,7 +35,7 @@ if (process.stdin.isTTY) {
 
 streamToPromise(process.stdin)
 	.then(parse)
-	.then(({ title, version, days, acronym }) => {
+	.then(({ title, version, days, acronym, baseUrl }) => {
 		// Find the most common event type.
 		// It will get ignored in the template (this is useful because
 		// nearly all events at CCC are set to "lecture").
@@ -47,7 +47,7 @@ streamToPromise(process.stdin)
 			.maxBy(1)[0];
 
 		// Initialise the template
-		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ], title, version, acronym });
+		const dayTemplate = Template({ ignoreEventTypes: [ mostCommonEventType ], title, version, acronym, baseUrl });
 
 		try {
 			fs.mkdirSync(program.outputDir);
