@@ -15,7 +15,7 @@ $ npm install -g c3t-pad
 Once installed, you can get the most recent schedule and turn it into Etherpad files:
 
 ```sh
-$ curl https://events.ccc.de/congress/2016/Fahrplan/schedule.xml | c3t-pad
+$ curl https://events.ccc.de/congress/2017/Fahrplan/schedule.xml | c3t-pad
 ```
 
 Of course, the XML doesn't have to come from curl; you can just as well pipe in a local file.
