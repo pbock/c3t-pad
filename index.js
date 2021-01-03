@@ -24,8 +24,22 @@ const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.
 program.version(packageJson.version)
 	.description(`Turns conference schedule XML into HTML for translation angels' Etherpads`)
 	.option('-o, --output-dir <dir>', 'Specify a different output directory', 'output/')
+	.option('-r, --rooms <list>', 'Restrict rooms processed to a comma-separated list', '')
+	.option('-R, --room-list <filename>', 'Take list of rooms to process from a line-separated file', '')
 	.on('--help', logExamples)
 	.parse(process.argv);
+
+if (program.rooms && program.roomList) {
+	console.error('Please do not supply -r and -R at the same time.');
+	process.exit(1);
+}
+if (program.rooms) {
+	program.rooms = program.rooms.split(',');
+} else if (program.roomList) {
+	program.rooms = fs.readFileSync(program.roomList, 'UTF-8')
+		.split(/[\r\n]+/)
+		.filter(string => string.length);
+}
 
 if (process.stdin.isTTY) {
 	console.error(`Please pipe a congress schedule XML into c3t-pad.\n`);
@@ -34,7 +48,7 @@ if (process.stdin.isTTY) {
 }
 
 streamToPromise(process.stdin)
-	.then(parse)
+	.then((xml) => parse(xml, program.rooms))
 	.then(({ title, version, days, acronym, baseUrl }) => {
 		// Find the most common event type.
 		// It will get ignored in the template (this is useful because
